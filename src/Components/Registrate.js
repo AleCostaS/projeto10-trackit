@@ -36,23 +36,22 @@ export default function Registration () {
             });
         }
     }, [form]);
-setIsAble(false);
+
     const makeRegister =  (event) => {
-        {object ? postRegister(object)
-        .catch(function (error) {
-            alert('Ocorreu um erro no registro, tente novamente!'+error);
-            setIsAble(true);
-        })
-        .then(function (response) {
-            if (response) {
-                navigate('/');
-                console.log(response)
-            }
-        })
-        .finally(function(){
-            setIsAble(true);
-        })
-        : alert('Preencha todos os campos!');}
+        {object ? (
+            postRegister(object).then(setIsAble(false))
+            .catch(function (error) {
+                alert('Ocorreu um erro no registro, tente novamente!'+error);
+                setIsAble(true);
+            }).then(function (response) {
+                if (response) {
+                    navigate('/');
+                    console.log(response)
+                }
+            }).finally(function(){
+                setIsAble(true);
+            })
+        ) : alert('Preencha todos os campos!');}
 
         event.preventDefault();
     }
@@ -64,12 +63,12 @@ setIsAble(false);
             </Logo>
 
             <Form>
-                <form onSubmit={makeRegister} disabled={isAble ? true : false} >
-                    <input type="email" name='email' value={form.email} onChange={handleForm} placeholder='email' />
-                    <input type="password" name='password' value={form.password} onChange={handleForm} placeholder='senha' />
-                    <input type="name" name='name' value={form.name} onChange={handleForm} placeholder='nome' />
-                    <input type="url" name='url' value={form.url} onChange={handleForm} placeholder='foto' />
-                    <button type="submit">
+                <form onSubmit={makeRegister} >
+                    <input type="email" name='email' value={form.email} onChange={handleForm} placeholder='email' disabled={!isAble ? true : false} />
+                    <input type="password" name='password' value={form.password} onChange={handleForm} placeholder='senha' disabled={!isAble ? true : false} />
+                    <input type="name" name='name' value={form.name} onChange={handleForm} placeholder='nome' disabled={!isAble ? true : false} />
+                    <input type="url" name='url' value={form.url} onChange={handleForm} placeholder='foto' disabled={!isAble ? true : false} />
+                    <button type="submit" disabled={!isAble ? true : false} >
                         {isAble ? 'Cadastrar' : <ThreeDots 
                             height="80" 
                             width="80" 
@@ -146,6 +145,11 @@ const Form = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    button:disabled {
+        background-color: #52B6FF;
+        opacity: 0.6;
     }
 
     input::placeholder {

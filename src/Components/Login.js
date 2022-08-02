@@ -53,6 +53,7 @@ const Logo = styled.div`
 `;
 
 const Register = styled.div`
+    font-family: 'Lexend Deca';
     margin: 0px 36px;
 
     display: flex;
@@ -65,6 +66,7 @@ const Register = styled.div`
 `;
 
 const Form = styled.div`
+    font-family: 'Lexend Deca';
     box-sizing: border-box;
     margin: 0px 36px;
 
@@ -77,7 +79,6 @@ const Form = styled.div`
         width: 100%;
         height: 45px;
         margin-bottom: 4px;
-        font-family: 'Lexend Deca';
         font-size: 18px;
         color: #666666;
         border: 1px solid #D5D5D5;

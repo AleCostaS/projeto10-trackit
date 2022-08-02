@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { postRegister } from '../Services/trackit';
 
 export default function Registration () {
     const [object, setObject] = React.useState();
@@ -23,12 +24,15 @@ export default function Registration () {
     }
 
     useEffect(() => {
-        console.log(form);
         if (form.email !== '' && form.password !== '' && form.name !== '' && form.url !== '') {
-            setObject(
-                
-            );
+            setObject({
+                email: form.email,
+                name: form.name,
+                image: form.url,
+	            password: form.password
+            });
         }
+        console.log(object)
     }, [form]);
 
     const makeRegister =  () => {

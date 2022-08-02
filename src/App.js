@@ -9,6 +9,7 @@ export default function App () {
     return (
         <>
             <Reset />
+            <GlobalStyle/>
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Login />}/>

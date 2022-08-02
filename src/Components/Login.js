@@ -4,8 +4,13 @@ import { useState, useEffect } from 'react';
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { postLogin } from '../Services/trackit';
+import { ThreeDots } from  'react-loader-spinner';
 
 export default function Login () {
+    const navigate = useNavigate();
+    const [object, setObject] = React.useState({});
+    const [isAble, setIsAble] = React.useState(true);
     const [form, setForm] = React.useState({
         email: '',
         password: '',
@@ -18,9 +23,35 @@ export default function Login () {
         }) 
     }
 
-    function makeLogin () {
-        console.log('aqui');
+    useEffect(() => {
+        if (form.email !== '' && form.password !== '') {
+            setObject({
+                email: form.email,
+	            password: form.password
+            });
+        }
+    }, [form]);
+
+
+    const makeLogin =  (event) => {
+        {object ? (
+            postLogin(object).then(setIsAble(false))
+            .catch(function (error) {
+                alert('Ocorreu um erro no registro, tente novamente! '+error);
+                setIsAble(true);
+            }).then(function (response) {
+                if (response) {
+                    navigate('/hoje');
+                    console.log(response)
+                }
+            }).finally(function(){
+                setIsAble(true);
+            })
+        ) : alert('Preencha todos os campos!');}
+
+        event.preventDefault();
     }
+
 
     return (
         <>
@@ -30,9 +61,20 @@ export default function Login () {
 
             <Form>
                 <form onSubmit={makeLogin}>
-                    <input type="email" name='email' value={form.email} onChange={handleForm} placeholder='email' />
-                    <input type="password" name='password' value={form.password} onChange={handleForm} placeholder='senha' />
-                    <button type="submit">Entrar</button>
+                    <input type="email" name='email' value={form.email} onChange={handleForm} placeholder='email' disabled={!isAble ? true : false} />
+                    <input type="password" name='password' value={form.password} onChange={handleForm} placeholder='senha' disabled={!isAble ? true : false} />
+                    <button type="submit">
+                        {isAble ? 'Entrar' : <ThreeDots 
+                            height="80" 
+                            width="80" 
+                            radius="9"
+                            color="#FFFFFF" 
+                            ariaLabel="three-dots-loading"
+                            wrapperStyle={{}}
+                            wrapperClassName=""
+                            visible={true}
+                        />}
+                    </button>
                 </form>
             </Form>
 
@@ -94,6 +136,15 @@ const Form = styled.div`
         font-weight: 400;
         font-size: 22px;
         color: #FFFFFF;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    button:disabled {
+        background-color: #52B6FF;
+        opacity: 0.6;
     }
 
     input::placeholder {

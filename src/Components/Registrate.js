@@ -41,7 +41,7 @@ export default function Registration () {
         {object ? (
             postRegister(object).then(setIsAble(false))
             .catch(function (error) {
-                alert('Ocorreu um erro no registro, tente novamente!'+error);
+                alert('Ocorreu um erro no registro, tente novamente! '+error);
                 setIsAble(true);
             }).then(function (response) {
                 if (response) {

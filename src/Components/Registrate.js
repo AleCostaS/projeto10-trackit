@@ -5,9 +5,12 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { postRegister } from '../Services/trackit';
+import { ThreeDots } from  'react-loader-spinner';
 
 export default function Registration () {
-    const [object, setObject] = React.useState();
+    const navigate = useNavigate();
+    const [object, setObject] = React.useState({});
+    const [isAble, setIsAble] = React.useState(true);
     const [form, setForm] = React.useState({
         email: '',
         password: '',
@@ -32,11 +35,26 @@ export default function Registration () {
 	            password: form.password
             });
         }
-        console.log(object)
     }, [form]);
+setIsAble(false);
+    const makeRegister =  (event) => {
+        {object ? postRegister(object)
+        .catch(function (error) {
+            alert('Ocorreu um erro no registro, tente novamente!'+error);
+            setIsAble(true);
+        })
+        .then(function (response) {
+            if (response) {
+                navigate('/');
+                console.log(response)
+            }
+        })
+        .finally(function(){
+            setIsAble(true);
+        })
+        : alert('Preencha todos os campos!');}
 
-    const makeRegister =  () => {
-        console.log(form);
+        event.preventDefault();
     }
 
     return (
@@ -46,12 +64,23 @@ export default function Registration () {
             </Logo>
 
             <Form>
-                <form onSubmit={makeRegister}>
+                <form onSubmit={makeRegister} disabled={isAble ? true : false} >
                     <input type="email" name='email' value={form.email} onChange={handleForm} placeholder='email' />
                     <input type="password" name='password' value={form.password} onChange={handleForm} placeholder='senha' />
                     <input type="name" name='name' value={form.name} onChange={handleForm} placeholder='nome' />
                     <input type="url" name='url' value={form.url} onChange={handleForm} placeholder='foto' />
-                    <button type="submit">Cadastrar</button>
+                    <button type="submit">
+                        {isAble ? 'Cadastrar' : <ThreeDots 
+                            height="80" 
+                            width="80" 
+                            radius="9"
+                            color="#FFFFFF" 
+                            ariaLabel="three-dots-loading"
+                            wrapperStyle={{}}
+                            wrapperClassName=""
+                            visible={true}
+                        />}
+                    </button>
                 </form>
             </Form>
 
@@ -113,6 +142,10 @@ const Form = styled.div`
         font-weight: 400;
         font-size: 22px;
         color: #FFFFFF;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     input::placeholder {

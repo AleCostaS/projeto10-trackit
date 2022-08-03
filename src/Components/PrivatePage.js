@@ -32,22 +32,19 @@ export default function PrivatePage({ children }) {
     const auth = JSON.parse(localStorage.getItem('auth'));
 
     if (!auth) {
-        console.log('aquo');
         return  renderError();
     }
 
     const now = dayjs().unix();
     const timeLogged = auth.timestamp;
-    console.log(dayjs(now).diff(dayjs(timeLogged)));
+
     if (dayjs(now).diff(dayjs(timeLogged)) <= MIN_10) {
-        console.log('aqui');
         return (
         <>
             {children}
         </>
         );
     } else {
-        console.log('aqua');
         navigate("/");
         renderError();
     }

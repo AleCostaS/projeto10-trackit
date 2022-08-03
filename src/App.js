@@ -5,23 +5,32 @@ import Login from "./Components/Login";
 import Registration from "./Components/Registrate.js";
 import Today from "./Components/Today";
 import PrivatePage from "./Components/PrivatePage";
+import UserContext from "./Components/contexts/UserContexts";
+import { useState } from 'react';
 
 export default function App () {
+    const [user, setUser] = useState([]);
+
     return (
         <>
             <Reset />
             <GlobalStyle/>
+            <UserContext.Provider value={[user, setUser]}>
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Login />}/>
                         <Route path="/cadastro" element={<Registration />}/>
-                        <Route path="/hoje" element={
+                       
+                            <Route path="/hoje" element={
                             <PrivatePage>
                                 <Today />
                             </PrivatePage>
                         }/>
+                        
+                        
                     </Routes>
                 </BrowserRouter>
+            </UserContext.Provider>
         </>
     );
 }

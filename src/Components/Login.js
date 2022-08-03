@@ -1,13 +1,15 @@
 import TrackitLogin from '../Img/Trackit-Login.png';
 import { useNavigate, Link  } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { postLogin } from '../Services/trackit';
 import { ThreeDots } from  'react-loader-spinner';
 import dayjs from "dayjs";
+import UserContext from "./contexts/UserContexts";
 
 export default function Login () {
+    const [user, setUser] = useContext(UserContext);
     const navigate = useNavigate();
     const [object, setObject] = React.useState({});
     const [isAble, setIsAble] = React.useState(true);
@@ -42,6 +44,7 @@ export default function Login () {
                 setIsAble(true);
             }).then(function (response) {
                 if (response) {
+                    setUser({name: response.data.name, image: response.data.image, email: response.data.email});
                     localStorage.setItem('auth', JSON.stringify({token: response.data.token, timestamp: dayjs().unix()}));
                     navigate('/hoje');
                 }

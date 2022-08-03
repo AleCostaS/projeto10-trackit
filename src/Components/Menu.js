@@ -1,18 +1,18 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from "./Providers/authProvider";
+import { UserContext } from "./Providers/userProvider";
 import styled from 'styled-components';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 
 export default function Menu () {
-    const { user } = useContext(AuthContext);
+    const { user } = useContext(UserContext);
     const percentage = 66;
     
     return (
         <>
             <Upper>
                 <h1>TrackIt</h1>
-                <img src={user.image} alt=''/>
+                <img src={user} alt=''/>
             </Upper>
 
             <Lower>

@@ -5,7 +5,7 @@ import Login from "./Components/Login";
 import Registration from "./Components/Registrate.js";
 import Today from "./Components/Today";
 import PrivatePage from "./Components/PrivatePage";
-import { AuthProvider } from "./Components/Providers/authProvider";
+import { UserProvider } from "./Components/Providers/userProvider";
 import Menu from "./Components/Menu";
 
 export default function App () {
@@ -13,7 +13,7 @@ export default function App () {
         <>
             <Reset />
             <GlobalStyle/>
-            <AuthProvider >
+            <UserProvider >
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Login />}/>
@@ -38,7 +38,7 @@ export default function App () {
                         }/>
                     </Routes>
                 </BrowserRouter>
-            </AuthProvider>
+            </UserProvider>
         </>
     );
 }

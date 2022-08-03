@@ -1,11 +1,11 @@
 import TrackitLogin from '../Img/Trackit-Login.png';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link  } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { postLogin } from '../Services/trackit';
 import { ThreeDots } from  'react-loader-spinner';
+import dayjs from "dayjs";
 
 export default function Login () {
     const navigate = useNavigate();
@@ -15,7 +15,7 @@ export default function Login () {
         email: '',
         password: '',
     });
-    
+
     function handleForm (e) {
         setForm({
         ...form,
@@ -34,6 +34,7 @@ export default function Login () {
 
 
     const makeLogin =  (event) => {
+        
         {object ? (
             postLogin(object).then(setIsAble(false))
             .catch(function (error) {
@@ -41,8 +42,8 @@ export default function Login () {
                 setIsAble(true);
             }).then(function (response) {
                 if (response) {
+                    localStorage.setItem('auth', JSON.stringify({token: response.data.token, timestamp: dayjs().unix()}));
                     navigate('/hoje');
-                    console.log(response)
                 }
             }).finally(function(){
                 setIsAble(true);

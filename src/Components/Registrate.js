@@ -1,9 +1,8 @@
 import TrackitLogin from '../Img/Trackit-Login.png';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import React from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { postRegister } from '../Services/trackit';
 import { ThreeDots } from  'react-loader-spinner';
 

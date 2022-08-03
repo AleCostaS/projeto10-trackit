@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import UserContext from "./contexts/UserContexts";
+import { AuthContext } from "./Providers/authProvider";
 import styled from 'styled-components';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 
 export default function Menu () {
-    const [user, setUser] = useContext(UserContext);
+    const { user } = useContext(AuthContext);
     const percentage = 66;
     
     return (

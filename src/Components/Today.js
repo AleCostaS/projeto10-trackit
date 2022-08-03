@@ -1,6 +1,4 @@
-import { useContext } from 'react';
 import styled from 'styled-components';
-import UserContext from "./contexts/UserContexts";
 import dayjs from "dayjs";
 import "dayjs/locale/pt";
 
@@ -17,8 +15,6 @@ dayjs.extend(relativeTime);
 dayjs.extend(calendar);
 
 export default function Today () {
-    const [user, setUser] = useContext(UserContext);
-    
     return (
         <>
             <Content>

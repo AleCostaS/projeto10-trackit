@@ -1,16 +1,15 @@
 import TrackitLogin from '../Img/Trackit-Login.png';
 import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import React from 'react';
 import styled from 'styled-components';
 import { postRegister } from '../Services/trackit';
 import { ThreeDots } from  'react-loader-spinner';
 
 export default function Registration () {
     const navigate = useNavigate();
-    const [object, setObject] = React.useState({});
-    const [isAble, setIsAble] = React.useState(true);
-    const [form, setForm] = React.useState({
+    const [object, setObject] = useState({});
+    const [isAble, setIsAble] = useState(true);
+    const [form, setForm] = useState({
         email: '',
         password: '',
         name: '',
@@ -37,7 +36,7 @@ export default function Registration () {
     }, [form]);
 
     const makeRegister =  (event) => {
-        {object ? (
+        object ? (
             postRegister(object).then(setIsAble(false))
             .catch(function (error) {
                 alert('Ocorreu um erro no registro, tente novamente! '+error);
@@ -50,7 +49,7 @@ export default function Registration () {
             }).finally(function(){
                 setIsAble(true);
             })
-        ) : alert('Preencha todos os campos!');}
+        ) : alert('Preencha todos os campos!');
 
         event.preventDefault();
     }

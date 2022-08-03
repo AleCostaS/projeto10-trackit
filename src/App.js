@@ -5,18 +5,15 @@ import Login from "./Components/Login";
 import Registration from "./Components/Registrate.js";
 import Today from "./Components/Today";
 import PrivatePage from "./Components/PrivatePage";
-import UserContext from "./Components/contexts/UserContexts";
-import { useState } from 'react';
+import { AuthProvider } from "./Components/Providers/authProvider";
 import Menu from "./Components/Menu";
 
 export default function App () {
-    const [user, setUser] = useState([]);
-
     return (
         <>
             <Reset />
             <GlobalStyle/>
-            <UserContext.Provider value={[user, setUser]}>
+            <AuthProvider >
                 <BrowserRouter>
                     <Routes>
                         <Route path="/" element={<Login />}/>
@@ -41,7 +38,7 @@ export default function App () {
                         }/>
                     </Routes>
                 </BrowserRouter>
-            </UserContext.Provider>
+            </AuthProvider>
         </>
     );
 }

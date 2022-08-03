@@ -1,19 +1,18 @@
 import TrackitLogin from '../Img/Trackit-Login.png';
 import { useNavigate, Link  } from "react-router-dom";
-import { useState, useEffect } from 'react';
-import React, { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { postLogin } from '../Services/trackit';
 import { ThreeDots } from  'react-loader-spinner';
 import dayjs from "dayjs";
-import UserContext from "./contexts/UserContexts";
+import { AuthContext } from "./Providers/authProvider";
 
 export default function Login () {
-    const [user, setUser] = useContext(UserContext);
+    const { setUser } = useContext(AuthContext);
     const navigate = useNavigate();
-    const [object, setObject] = React.useState({});
-    const [isAble, setIsAble] = React.useState(true);
-    const [form, setForm] = React.useState({
+    const [object, setObject] = useState({});
+    const [isAble, setIsAble] = useState(true);
+    const [form, setForm] = useState({
         email: '',
         password: '',
     });
@@ -37,21 +36,21 @@ export default function Login () {
 
     const makeLogin =  (event) => {
         
-        {object ? (
+        object ? (
             postLogin(object).then(setIsAble(false))
             .catch(function (error) {
                 alert('Ocorreu um erro no registro, tente novamente! '+error);
                 setIsAble(true);
             }).then(function (response) {
                 if (response) {
-                    setUser({name: response.data.name, image: response.data.image, email: response.data.email});
+                    setUser({image: response.data.image});
                     localStorage.setItem('auth', JSON.stringify({token: response.data.token, timestamp: dayjs().unix()}));
                     navigate('/hoje');
                 }
             }).finally(function(){
                 setIsAble(true);
             })
-        ) : alert('Preencha todos os campos!');}
+        ) : alert('Preencha todos os campos!');
 
         event.preventDefault();
     }

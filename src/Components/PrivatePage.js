@@ -1,5 +1,5 @@
 import TrackitLogin from '../Img/Trackit-Login.png';
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import styled from 'styled-components';
 
@@ -28,26 +28,24 @@ function renderError() {
 }
 
 export default function PrivatePage({ children }) {
-    const navigate = useNavigate();
     const auth = JSON.parse(localStorage.getItem('auth'));
-
+    
     if (!auth) {
-        return  renderError();
+        return renderError();
     }
 
     const now = dayjs().unix();
     const timeLogged = auth.timestamp;
 
-    console.log((dayjs(now).diff(dayjs(timeLogged)) <= MIN_10));
-    if (dayjs(now).diff(dayjs(timeLogged)) <= MIN_10) {
+    console.log((dayjs(now).diff(dayjs(timeLogged)) <= 10));
+    if (dayjs(now).diff(dayjs(timeLogged)) <= 10) {
         return (
         <>
             {children}
         </>
         );
     } else {
-        navigate("/");
-        renderError();
+        return renderError();
     }
 }
 

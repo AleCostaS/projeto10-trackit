@@ -3,6 +3,7 @@ import { getHabits } from '../Services/trackit';
 import { useState, useEffect } from 'react';
 import { ThreeDots } from  'react-loader-spinner';
 import { postHabits } from '../Services/trackit';
+import { deleteHabits } from '../Services/trackit';
 
 export default function Habits () {
     const [ habits, setHabits ] = useState([]);
@@ -54,31 +55,47 @@ export default function Habits () {
             alert('De um nome ao seu hábito!');
         } else if (arr.length === 0) {
             alert('Selecione ao menos um dia da semana!');
+        } else {
+            postHabits({
+                    name: object.name,
+                    days: arr
+            }, config).then(setIsAble(false))
+            .catch(function (error) {
+                alert('Ocorreu um erro, tente novamente! '+error);
+                setIsAble(true);
+            }).then(function (response) {
+                if (response) {
+                    setCreating(false)
+                }
+            }).finally(function(){
+                setIsAble(true);
+            })
         }
-        
-        postHabits({
-                name: object.name,
-                days: arr
-        }, config).then(setIsAble(false))
+    }; 
+
+    function deletingHabits (habitId) {
+        deleteHabits(habitId, config)
         .catch(function (error) {
             alert('Ocorreu um erro, tente novamente! '+error);
-            setIsAble(true);
         }).then(function (response) {
-            if (response) {
-                setCreating(false)
-                console.log(response.data);
-            }
-        }).finally(function(){
-            setIsAble(true);
+            getHabits(config)
+            .catch(function (error) {
+                alert('Ocorreu um erro no registro, tente novamente! '+error);
+            }).then(function (response) {
+                if (response) {
+                    if (habits.length !== response.data.length){
+                        setHabits(response.data);
+                    }
+                }
+            })
         })
-    }; 
+    };
     
     getHabits(config)
     .catch(function (error) {
         alert('Ocorreu um erro no registro, tente novamente! '+error);
     }).then(function (response) {
         if (response) {
-            console.log(habits)
             if (habits.length !== response.data.length){
                 setHabits(response.data);
             }
@@ -96,29 +113,29 @@ export default function Habits () {
                 {creating ? 
                 <CreateHabit >
                     <form onSubmit={sendHabit}>
-                        <input type="text" name='name' placeholder='nome do hábito' onChange={handleForm} disabled={!isAble ? true : false}></input>
+                        <input type="text" name='name' placeholder='nome do hábito' onChange={handleForm} value={form.name} disabled={!isAble ? true : false}></input>
                     
                         <Weekdays>
                             <Weekday selected={weekdays[0]}>
-                                <div onClick={() => selectWeekday(0)}>D</div>
+                                <div onClick={() => isAble ? selectWeekday(0) : {}}>D</div>
                             </Weekday>
                             <Weekday selected={weekdays[1]}>
-                                <div onClick={() => selectWeekday(1)}>S</div>
+                                <div onClick={() => isAble ? selectWeekday(1) : {}}>S</div>
                             </Weekday>
                             <Weekday selected={weekdays[2]}>
-                                <div onClick={() => selectWeekday(2)}>T</div>
+                                <div onClick={() => isAble ? selectWeekday(2) : {}}>T</div>
                             </Weekday>
                             <Weekday selected={weekdays[3]}>
-                                <div onClick={() => selectWeekday(3)}>Q</div>
+                                <div onClick={() => isAble ? selectWeekday(3) : {}}>Q</div>
                             </Weekday>
                             <Weekday selected={weekdays[4]}>
-                                <div onClick={() => selectWeekday(4)}>Q</div>
+                                <div onClick={() => isAble ? selectWeekday(4) : {}}>Q</div>
                             </Weekday>
                             <Weekday selected={weekdays[5]}>
-                                <div onClick={() => selectWeekday(5)}>S</div>
+                                <div onClick={() => isAble ? selectWeekday(5) : {}}>S</div>
                             </Weekday>
                             <Weekday selected={weekdays[6]}>
-                                <div onClick={() => selectWeekday(6)}>S</div>
+                                <div onClick={() => isAble ? selectWeekday(6) : {}}>S</div>
                             </Weekday>
                         </Weekdays>
                         <Options>
@@ -134,11 +151,43 @@ export default function Habits () {
                                     visible={true}
                                 />}
                             </button>
-                            <button onClick={() => setCreating(false)}>Cancelar</button>
+                            <button type="button" onClick={() => setCreating(false)}>Cancelar</button>
                         </Options>
                     </form>
                 </CreateHabit> : <></>}
-                <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
+                {habits.length === 0 ? 
+                    <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p> 
+                :
+                    habits.map((habit) => {
+                        return <Habit>
+                            <p>{habit.name}</p>
+                            <Weekdays>
+                            <Weekday selected={habit.days[0] === 0}>
+                                <div>D</div>
+                            </Weekday>
+                            <Weekday selected={habit.days[0] === 1 || habit.days[1] === 1}>
+                                <div>S</div>
+                            </Weekday>
+                            <Weekday selected={habit.days[0] === 2 || habit.days[1] === 2 || habit.days[2] === 2}>
+                                <div>T</div>
+                            </Weekday>
+                            <Weekday selected={habit.days[0] === 3 || habit.days[1] === 3 || habit.days[2] === 3 || habit.days[3] === 3}>
+                                <div>Q</div>
+                            </Weekday>
+                            <Weekday selected={habit.days[0] === 4 || habit.days[1] === 4 || habit.days[2] === 4 || habit.days[3] === 4 || habit.days[4] === 4}>
+                                <div>Q</div>
+                            </Weekday>
+                            <Weekday selected={habit.days[0] === 5 || habit.days[1] === 5 || habit.days[2] === 5 || habit.days[3] === 5 || habit.days[4] === 5 || habit.days[5] === 5}>
+                                <div>S</div>
+                            </Weekday>
+                            <Weekday selected={habit.days[0] === 6 || habit.days[1] === 6 || habit.days[2] === 6 || habit.days[3] === 6 || habit.days[4] === 6 || habit.days[5] === 6 || habit.days[5] === 5}>
+                                <div>S</div>
+                            </Weekday>
+                        </Weekdays>
+                        <ion-icon name="trash-outline" onClick={() => deletingHabits(habit.id)}></ion-icon>
+                        </Habit>
+                    })
+                }
             </YoursHabits>
         </Content>
     );
@@ -196,6 +245,7 @@ const CreateHabit = styled.div`
     background-color: #FFFFFF;
     border-radius: 5px;
     padding: 18px;
+    margin-bottom: 20px;
 
     input {
         box-sizing: border-box;
@@ -254,11 +304,43 @@ const Options = styled.div`
         font-family: 'Lexend Deca';
         font-weight: 400;
         font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     button:nth-child(2) {
         background-color: #FFF;
         color: #52B6FF;
         margin-right: 18px;
+    }
+
+    button:disabled {
+        background-color: #52B6FF;
+        opacity: 0.6;
+    }
+`;
+
+const Habit = styled(CreateHabit)`
+    margin-bottom: 10px;
+    height: 91px;
+    position: relative;
+
+    p {
+        text-align: left;
+        padding: 0;
+        font-family: 'Lexend Deca';
+        font-weight: 400;
+        font-size: 20px;
+        color: #666666;
+    }
+
+    ion-icon {
+        font-size: 26px;
+        color: #666666;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        z-index: 1;
     }
 `;

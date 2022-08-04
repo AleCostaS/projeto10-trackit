@@ -6,6 +6,7 @@ export default function Habits () {
     const [ habits, setHabits ] = useState([]);
     const auth = JSON.parse(localStorage.getItem('auth'));
     const config = { headers:{'Authorization': 'Bearer '+auth.token}};
+    const [ creating, setCreating ] = useState(false);
     
     getHabits(config)
     .catch(function (error) {
@@ -23,10 +24,13 @@ export default function Habits () {
         <Content>
             <Create>
                 <p>Meus hábitos</p>
-                <button onClick={() => console.log('aqui')}>+</button>
+                <button onClick={() => setCreating(true)}>+</button>
             </Create>
 
             <YoursHabits>
+                {creating ? <CreateHabit>
+                    <input placeholder='nome do hábito'></input>
+                </CreateHabit> : <></>}
                 <p>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</p>
             </YoursHabits>
         </Content>
@@ -75,5 +79,31 @@ const YoursHabits = styled.div`
         font-size: 18px;
         color: #666666;
         text-align: center;
+    }
+`;
+
+const CreateHabit = styled.div`
+    box-sizing: border-box;
+    width: 100%;
+    height: 180px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    padding: 18px;
+
+    input {
+        box-sizing: border-box;
+        width: 98%;
+        height: 45px;
+        border: 1px solid #D5D5D5;
+        border-radius: 5px;
+        padding: 11px;
+        font-family: 'Lexend Deca';
+        font-weight: 400;
+        font-size: 20px;
+        color: #666666;
+    }
+
+    input::placeholder {
+        color: #DBDBDB;
     }
 `;

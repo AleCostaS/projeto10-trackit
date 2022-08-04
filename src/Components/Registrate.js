@@ -107,6 +107,7 @@ const Register = styled.div`
     a {
         text-decoration: underline;
         color: #52B6FF;
+        text-align: center;
     }
 `;
 

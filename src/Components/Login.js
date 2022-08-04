@@ -105,6 +105,7 @@ const Register = styled.div`
     a {
         text-decoration: underline;
         color: #52B6FF;
+        text-align: center;
     }
 `;
 
@@ -119,6 +120,8 @@ const Form = styled.div`
 
     button,
     input {
+        box-sizing: border-box;
+        padding: 11px;
         width: 100%;
         height: 45px;
         margin-bottom: 4px;

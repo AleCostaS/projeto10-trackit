@@ -6,7 +6,7 @@ function UserProvider({ children }){
     const [user, setUser] = useState();
     const userImage = JSON.parse(localStorage.getItem('userImage'));
 
-    if (!user && userImage){
+    if (!user){
         setUser(userImage);
     }
 

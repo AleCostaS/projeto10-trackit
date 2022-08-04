@@ -59,6 +59,7 @@ const Logo = styled.div`
 const Text = styled.div`
     font-family: 'Lexend Deca';
     color: #52B6FF;
+    text-align: center;
 
     display: flex;
     justify-content: center;

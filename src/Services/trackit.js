@@ -17,4 +17,9 @@ function getHabits(config) {
     return promise;
 }
 
-export { postRegister, postLogin, getHabits };
+function getTodayHabits(config) {
+    const promise = axios.get(`${BASE_URL}/habits/today`, config);
+    return promise;
+}
+
+export { postRegister, postLogin, getHabits,  getTodayHabits };

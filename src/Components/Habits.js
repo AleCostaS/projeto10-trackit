@@ -1,6 +1,24 @@
 import styled from 'styled-components';
+import { getHabits } from '../Services/trackit';
+import { useState } from 'react';
 
 export default function Habits () {
+    const [ habits, setHabits ] = useState([]);
+    const auth = JSON.parse(localStorage.getItem('auth'));
+    const config = { headers:{'Authorization': 'Bearer '+auth.token}};
+    
+    getHabits(config)
+    .catch(function (error) {
+        alert('Ocorreu um erro no registro, tente novamente! '+error);
+    }).then(function (response) {
+        if (response) {
+            if (habits.length !== response.data.length){
+                setHabits(response.data);
+                console.log(habits);
+            }
+        }
+    })
+
     return (
         <Content>
             <Create>

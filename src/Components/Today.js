@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import dayjs from "dayjs";
 import "dayjs/locale/pt";
-import { getHabits } from '../Services/trackit';
+import { getTodayHabits } from '../Services/trackit';
 import { useState } from 'react';
 
 // Plugins
@@ -19,19 +19,18 @@ dayjs.extend(calendar);
 
 
 export default function Today () {
-    const [ todayHabits, setTodayHabits ] = useState();
+    const [ todayHabits, setTodayHabits ] = useState([]);
     const auth = JSON.parse(localStorage.getItem('auth'));
     const config = { headers:{'Authorization': 'Bearer '+auth.token}};
     
-    getHabits(config)
+    getTodayHabits(config)
     .catch(function (error) {
         alert('Ocorreu um erro no registro, tente novamente! '+error);
     }).then(function (response) {
         if (response) {
-            if (!todayHabits){
+            if (todayHabits.length !== response.data.length){
                 setTodayHabits(response.data);
-            } else if (todayHabits.length !== response.data.length){
-                setTodayHabits(response.data);
+                console.log(todayHabits)
             }
         }
     })

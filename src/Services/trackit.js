@@ -22,4 +22,9 @@ function getTodayHabits(config) {
     return promise;
 }
 
-export { postRegister, postLogin, getHabits,  getTodayHabits };
+function postHabits(body, config) {
+    const promise = axios.post(`${BASE_URL}/habits`, body, config);
+    return promise;
+}
+
+export { postRegister, postLogin, getHabits,  getTodayHabits, postHabits };

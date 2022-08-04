@@ -31,7 +31,6 @@ export default function Login () {
         }
     }, [form]);
 
-
     const makeLogin =  (event) => {
         
         object ? (
@@ -52,7 +51,6 @@ export default function Login () {
 
         event.preventDefault();
     }
-
 
     return (
         <>

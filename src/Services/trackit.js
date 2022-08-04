@@ -12,4 +12,9 @@ function postLogin(body) {
     return promise;
 }
 
-export { postRegister, postLogin };
+function getHabits(config) {
+    const promise = axios.get(`${BASE_URL}/habits`, config);
+    return promise;
+}
+
+export { postRegister, postLogin, getHabits };

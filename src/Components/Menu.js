@@ -5,8 +5,7 @@ import styled from 'styled-components';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 
 export default function Menu () {
-    const { user } = useContext(UserContext);
-    const percentage = 66;
+    const { user, percentage } = useContext(UserContext);
     
     return (
         <>
@@ -96,5 +95,9 @@ const Lower = styled.div`
 
     div {
         margin-bottom: 50px
+    }
+
+    .CircularProgressbar-text {
+        transform: translate(-20px, 5px);
     }
 `;

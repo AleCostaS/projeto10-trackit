@@ -10,8 +10,19 @@ function UserProvider({ children }){
         setUser(userImage);
     }
 
+    const [percentage, setPercentage] = useState(0);
+    const percentageSaved = JSON.parse(localStorage.getItem('percentage'));
+
+    if (percentageSaved){
+        if (percentageSaved < percentage){
+            localStorage.setItem('percentage', JSON.stringify(percentage));
+        } else {
+            setPercentage(percentageSaved);
+        }
+    }
+
     return (
-        <UserContext.Provider value={{ user }}>
+        <UserContext.Provider value={{ user, percentage, setPercentage }}>
             { children }
         </UserContext.Provider>
     );

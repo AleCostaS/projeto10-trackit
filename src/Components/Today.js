@@ -39,25 +39,22 @@ export default function Today () {
     
     
     return (
-        <>
-            <Content>
-                <Day>
-                    {dayjs().locale("pt").format("dddd")+', '+dayjs().locale("pt").format("D/MM")}
-                    <p>Nenhum hábito concluído ainda</p>
-                </Day>
+        <Content>
+            <Day>
+                {dayjs().locale("pt").format("dddd")+', '+dayjs().locale("pt").format("D/MM")}
+                <p>Nenhum hábito concluído ainda</p>
+            </Day>
 
-                <TodayHabits>
-                    {!todayHabits || todayHabits.length === 0 ? <p>Você ainda não possui nenhum hábito</p> : <></>}    
-                </TodayHabits>
-               
-            </Content>
-        </>
-        
+            <TodayHabits>
+                {!todayHabits || todayHabits.length === 0 ? <p>Você ainda não possui nenhum hábito</p> : <></>}    
+            </TodayHabits>
+            
+        </Content>
     );
 };
 
 const Content = styled.div`
-    padding: 0 18px 0 18px;
+    padding: 0 18px;
     height: 100vh;
     background-color: #E5E5E5;
 `;

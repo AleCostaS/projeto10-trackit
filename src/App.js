@@ -7,6 +7,7 @@ import Today from "./Components/Today";
 import PrivatePage from "./Components/PrivatePage";
 import { UserProvider } from "./Components/Providers/userProvider";
 import Menu from "./Components/Menu";
+import Habits from "./Components/Habits";
 
 export default function App () {
     return (
@@ -27,7 +28,7 @@ export default function App () {
                         <Route path="/habitos" element={
                             <PrivatePage>
                                 <Menu />
-                                <Today />
+                                <Habits />
                             </PrivatePage>
                         }/>
                         <Route path="/historico" element={

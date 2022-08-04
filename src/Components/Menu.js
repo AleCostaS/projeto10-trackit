@@ -29,7 +29,8 @@ export default function Menu () {
                             textColor: "#fff",
                             pathColor: "#fff",
                             trailColor: "transparent",
-                            fontfamily: 'Lexend Deca'
+                            fontfamily: 'Lexend Deca',
+                            strokeLinecap: "round"
                             })}
                         />
                     </Link>

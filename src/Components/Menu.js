@@ -17,7 +17,7 @@ export default function Menu () {
             <Lower>
                 <Link to='/habitos'>Hábitos</Link>
 
-                <div style={{ width: 91, height: 91 }}>
+                <div style={{ width: 120, height: 120 }}>
                     <Link to='/hoje'>
                         <CircularProgressbar
                             value={percentage}
@@ -97,7 +97,7 @@ const Lower = styled.div`
     div {
         margin-bottom: 50px
     }
-
+    
     .CircularProgressbar-text {
         transform: translate(-20px, 5px);
     }

@@ -47,8 +47,8 @@ export default function Habits () {
         weekdays.map((day, index) => {
             if (day){
                 arr.push(index);
-                return arr;
             }
+            return arr;
         });
         
         if (!object.name) {

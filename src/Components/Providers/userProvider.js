@@ -13,8 +13,8 @@ function UserProvider({ children }){
 
     const day = JSON.parse(localStorage.getItem('day'));
 
-    if (!dayjs().isSame(day, 'day')){
-        console.log('day changed')
+    if (!dayjs().isSame(day, 'hour')){
+        console.log('hour changed')
         localStorage.setItem('percentage', JSON.stringify(percentage));
     }
     

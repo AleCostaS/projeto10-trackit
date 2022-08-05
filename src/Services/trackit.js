@@ -33,12 +33,12 @@ function deleteHabits (id, config) {
 }
 
 function checkHabits (id, config) {
-    const promise = axios.post(`${BASE_URL}/habits/`+id+`/check`, config);
+    const promise = axios.post(`${BASE_URL}/habits/`+id+`/check`, {}, config);
     return promise;
 }
 
 function uncheckHabits (id, config) {
-    const promise = axios.post(`${BASE_URL}/habits/`+id+`/uncheck`, config);
+    const promise = axios.post(`${BASE_URL}/habits/`+id+`/uncheck`, {}, config);
     return promise;
 }
 

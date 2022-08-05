@@ -23,7 +23,7 @@ export default function Today () {
     const [ todayHabits, setTodayHabits ] = useState([]);
     const auth = JSON.parse(localStorage.getItem('auth'));
     const config = { headers:{'Authorization': 'Bearer '+auth.token}};
-    const { percentage } = useContext(UserContext);
+    const { percentage, setPercentage } = useContext(UserContext);
     let arr = [];
     let c = 0;
 
@@ -33,9 +33,7 @@ export default function Today () {
             alert('Ocorreu um erro no registro, tente novamente! '+error);
         }).then(function (response) {
             if (response) {
-                if (todayHabits.length !== response.data.length){
-                    setTodayHabits(response.data);
-                }
+                setTodayHabits(response.data);
             }
         })
     };
@@ -47,6 +45,7 @@ export default function Today () {
         .catch(function (error) {
             alert('Ocorreu um erro, tente novamente! '+error);
         }).then(function (response) {
+            console.log(response)
             gettingTodayHabits();
         })
     };
@@ -56,6 +55,7 @@ export default function Today () {
         .catch(function (error) {
             alert('Ocorreu um erro, tente novamente! '+error);
         }).then(function (response) {
+            console.log(response)
             gettingTodayHabits();
         })
     };
@@ -76,8 +76,12 @@ export default function Today () {
                             if (check === true){
                                 c++;
                                 localStorage.setItem('percentage', JSON.stringify(((c/arr.length) * 100).toFixed()));
+                                setPercentage(((c/arr.length) * 100).toFixed());
                             }
                         })
+                    } else {
+                        localStorage.setItem('percentage', JSON.stringify(0));
+                        setPercentage(0);
                     }
                     
                     return <ShowingHabits checked={habit.done}>

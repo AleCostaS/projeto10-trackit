@@ -1,8 +1,21 @@
 import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
+import dayjs from "dayjs";
+import { useState } from 'react';
 
 export default function Historic () {
+    const [date, setDate] = useState();
+    const locale = 'fr-CA';
+    
+    const markDay = (date) => {
+        new Intl.DateTimeFormat(
+        locale, 
+        {
+            day: "2-digit"
+        }).format(date)
+    };
+
     return (
         <Content>
             <Title>
@@ -10,7 +23,10 @@ export default function Historic () {
             </Title>
 
             <ShowCalendar>
-                <Calendar />
+                <Calendar
+                    calendarType='US'
+                    formatDay={markDay(date)}
+                />
             </ShowCalendar>
         </Content>
     );

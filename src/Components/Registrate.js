@@ -122,6 +122,8 @@ const Form = styled.div`
 
     button,
     input {
+        box-sizing: border-box;
+        padding: 11px;
         width: 100%;
         height: 45px;
         margin-bottom: 4px;

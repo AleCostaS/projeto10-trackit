@@ -5,11 +5,14 @@ import styled from 'styled-components';
 import { postLogin } from '../Services/trackit';
 import { ThreeDots } from  'react-loader-spinner';
 import dayjs from "dayjs";
+import { useContext } from 'react';
+import { UserContext } from "./Providers/userProvider";
 
 export default function Login () {
     const navigate = useNavigate();
     const [object, setObject] = useState({});
     const [isAble, setIsAble] = useState(true);
+    const { setUser } = useContext(UserContext);
     const [form, setForm] = useState({
         email: '',
         password: '',
@@ -42,8 +45,8 @@ export default function Login () {
                 if (response) {
                     localStorage.setItem('userImage', JSON.stringify(response.data.image));
                     localStorage.setItem('auth', JSON.stringify({token: response.data.token, timestamp: dayjs().unix()}));
+                    setUser(response.data.image);
                     navigate('/hoje');
-                    window.location.reload();
                 }
             }).finally(function(){
                 setIsAble(true);

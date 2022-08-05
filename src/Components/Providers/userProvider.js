@@ -1,20 +1,27 @@
+import dayjs from 'dayjs';
 import { createContext, useState } from 'react';
 
 const UserContext = createContext();
 
 function UserProvider({ children }){
-    const [user, setUser] = useState();
     const userImage = JSON.parse(localStorage.getItem('userImage'));
-
-    if (!user && userImage){
-        setUser(userImage);
-    }
-
+    const [user, setUser] = useState(userImage);
+    
     const [percentage, setPercentage] = useState(0);
+    
+    localStorage.setItem('day', JSON.stringify(dayjs()));
+
+    const day = JSON.parse(localStorage.getItem('day'));
+
+    if (!dayjs().isSame(day, 'day')){
+        console.log('day changed')
+        localStorage.setItem('percentage', JSON.stringify(percentage));
+    }
+    
     const percentageSaved = JSON.parse(localStorage.getItem('percentage'));
 
     if (percentageSaved){
-        if (percentageSaved < percentage){
+        if (percentageSaved <= percentage){
             localStorage.setItem('percentage', JSON.stringify(percentage));
         } else {
             setPercentage(percentageSaved);
@@ -22,7 +29,7 @@ function UserProvider({ children }){
     }
 
     return (
-        <UserContext.Provider value={{ user, percentage, setPercentage }}>
+        <UserContext.Provider value={{ user, setUser, percentage, setPercentage }}>
             { children }
         </UserContext.Provider>
     );

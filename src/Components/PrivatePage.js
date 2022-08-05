@@ -39,7 +39,7 @@ export default function PrivatePage({ children }) {
     const now = dayjs().unix();
     const timeLogged = auth.timestamp;
 
-    if (dayjs(now).diff(dayjs(timeLogged)) <= 10) {
+    if (dayjs(now).diff(dayjs(timeLogged)) <= MIN_10) {
         return (
         <>
             {children}

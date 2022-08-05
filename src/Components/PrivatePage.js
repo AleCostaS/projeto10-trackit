@@ -8,6 +8,7 @@ const MIN_10 = 60 * 10;
 function renderError() {
     localStorage.clear('auth');
     localStorage.clear('userImage');
+    
     return (
         <>
             <Logo>
@@ -38,7 +39,7 @@ export default function PrivatePage({ children }) {
     const now = dayjs().unix();
     const timeLogged = auth.timestamp;
 
-    if (dayjs(now).diff(dayjs(timeLogged)) <= MIN_10) {
+    if (dayjs(now).diff(dayjs(timeLogged)) <= 100) {
         return (
         <>
             {children}

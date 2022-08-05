@@ -14,7 +14,7 @@ export default function Login () {
         email: '',
         password: '',
     });
-
+    
     function handleForm (e) {
         setForm({
         ...form,
@@ -31,7 +31,7 @@ export default function Login () {
         }
     }, [form]);
 
-    const makeLogin =  (event) => {
+    const makeLogin = (event) => {
         
         object ? (
             postLogin(object).then(setIsAble(false))
@@ -43,6 +43,7 @@ export default function Login () {
                     localStorage.setItem('userImage', JSON.stringify(response.data.image));
                     localStorage.setItem('auth', JSON.stringify({token: response.data.token, timestamp: dayjs().unix()}));
                     navigate('/hoje');
+                    window.location.reload();
                 }
             }).finally(function(){
                 setIsAble(true);

@@ -23,7 +23,7 @@ export default function Today () {
     const [ todayHabits, setTodayHabits ] = useState([]);
     const auth = JSON.parse(localStorage.getItem('auth'));
     const config = { headers:{'Authorization': 'Bearer '+auth.token}};
-    const { percentage, setPercentage } = useContext(UserContext);
+    const { percentage } = useContext(UserContext);
     let arr = [];
     let c = 0;
 
@@ -75,7 +75,7 @@ export default function Today () {
                         arr.map((check) => {
                             if (check === true){
                                 c++;
-                                setPercentage(((c/arr.length) * 100).toFixed());
+                                localStorage.setItem('percentage', JSON.stringify(((c/arr.length) * 100).toFixed()));
                             }
                         })
                     }

@@ -32,4 +32,14 @@ function deleteHabits (id, config) {
     return promise;
 }
 
-export { postRegister, postLogin, getHabits,  getTodayHabits, postHabits, deleteHabits };
+function checkHabits (id, config) {
+    const promise = axios.post(`${BASE_URL}/habits/`+id+`/check`, config);
+    return promise;
+}
+
+function uncheckHabits (id, config) {
+    const promise = axios.post(`${BASE_URL}/habits/`+id+`/uncheck`, config);
+    return promise;
+}
+
+export { postRegister, postLogin, getHabits,  getTodayHabits, postHabits, deleteHabits, checkHabits, uncheckHabits };

@@ -77,7 +77,7 @@ export default function Habits () {
         deleteHabits(habitId, config)
         .catch(function (error) {
             alert('Ocorreu um erro, tente novamente! '+error);
-        }).then(function (response) {
+        }).then(function () {
             getHabits(config)
             .catch(function (error) {
                 alert('Ocorreu um erro no registro, tente novamente! '+error);

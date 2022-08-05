@@ -3,6 +3,8 @@ import dayjs from "dayjs";
 import "dayjs/locale/pt";
 import { getTodayHabits } from '../Services/trackit';
 import { useState } from 'react';
+import { checkHabits } from '../Services/trackit';
+import { uncheckHabits } from '../Services/trackit';
 
 // Plugins
 import advancedFormat from "dayjs/plugin/advancedFormat";
@@ -20,18 +22,42 @@ export default function Today () {
     const [ todayHabits, setTodayHabits ] = useState([]);
     const auth = JSON.parse(localStorage.getItem('auth'));
     const config = { headers:{'Authorization': 'Bearer '+auth.token}};
-    
-    getTodayHabits(config)
-    .catch(function (error) {
-        alert('Ocorreu um erro no registro, tente novamente! '+error);
-    }).then(function (response) {
-        if (response) {
-            if (todayHabits.length !== response.data.length){
-                setTodayHabits(response.data);
-                console.log(response.data)
+
+    function gettingTodayHabits () {
+            getTodayHabits(config)
+        .catch(function (error) {
+            alert('Ocorreu um erro no registro, tente novamente! '+error);
+        }).then(function (response) {
+            if (response) {
+                if (todayHabits.length !== response.data.length){
+                    setTodayHabits(response.data);
+                    console.log(response.data)
+                }
             }
-        }
-    })
+        })
+    };
+
+    gettingTodayHabits();
+    
+    const checkingHabits = (habitId) => {
+        checkHabits(habitId, config)
+        .catch(function (error) {
+            alert('Ocorreu um erro, tente novamente! '+error);
+        }).then(function (response) {
+            console.log(response)
+            gettingTodayHabits();
+        })
+    };
+
+    const uncheckingHabits = (habitId) => {
+        uncheckHabits(habitId, config)
+        .catch(function (error) {
+            alert('Ocorreu um erro, tente novamente! '+error);
+        }).then(function (response) {
+            console.log(response)
+            gettingTodayHabits();
+        })
+    };
     
     return (
         <Content>
@@ -42,7 +68,7 @@ export default function Today () {
 
             <TodayHabits>
                 {!todayHabits || todayHabits.length === 0 ? <p>Você ainda não possui nenhum hábito</p> : todayHabits.map((habit) => {
-                    return <ShowingHabits>
+                    return <ShowingHabits checked={habit.done}>
                         <span>
                             <Data>
                                 <h1>{habit.name}</h1>
@@ -51,9 +77,8 @@ export default function Today () {
                                     <p>Seu recorde: {habit.highestSequence} dias</p>
                                 </div>
                             </Data>
-                            
 
-                            <button onClick={() => console.log('aqui')}>
+                            <button onClick={() => !habit.done ? checkingHabits(habit.id) : uncheckingHabits(habit.id)} >
                                 <ion-icon name="checkmark-outline"></ion-icon>
                             </button>
                         </span>
@@ -112,7 +137,7 @@ const ShowingHabits = styled.div`
     height: 124px;
     background: #FFFFFF;
     border-radius: 5px;
-    position: relative;
+    overflow: hidden;
 
     span {
         display: flex;
@@ -123,7 +148,7 @@ const ShowingHabits = styled.div`
         border: none;
         cursor: pointer;
         border-radius: 5px;
-        background-color: #EBEBEB;
+        background-color:   ${props => props.checked ? '#8FC549' : '#EBEBEB'} ;
         margin: 4px;
         width: 119px;
         height: 119px;

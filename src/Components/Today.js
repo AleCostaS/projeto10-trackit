@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import dayjs from "dayjs";
 import "dayjs/locale/pt";
 import { getTodayHabits } from '../Services/trackit';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { checkHabits } from '../Services/trackit';
 import { uncheckHabits } from '../Services/trackit';
+import { UserContext } from "./Providers/userProvider";
 
 // Plugins
 import advancedFormat from "dayjs/plugin/advancedFormat";
@@ -22,6 +23,9 @@ export default function Today () {
     const [ todayHabits, setTodayHabits ] = useState([]);
     const auth = JSON.parse(localStorage.getItem('auth'));
     const config = { headers:{'Authorization': 'Bearer '+auth.token}};
+    const { percentage, setPercentage } = useContext(UserContext);
+    let arr = [];
+    let c = 0;
 
     function gettingTodayHabits () {
             getTodayHabits(config)
@@ -63,18 +67,29 @@ export default function Today () {
         <Content>
             <Day>
                 {dayjs().locale("pt").format("dddd")+', '+dayjs().locale("pt").format("D/MM")}
-                <p>Nenhum hábito concluído ainda</p>
+                {percentage === 0 ? <p>Nenhum hábito concluído ainda</p> : <h1>{percentage}% dos hábitos concluídos</h1>}
             </Day>
 
             <TodayHabits>
                 {!todayHabits || todayHabits.length === 0 ? <p>Você ainda não possui nenhum hábito</p> : todayHabits.map((habit) => {
+                    arr= [...arr, habit.done];
+                    
+                    if (arr.length === todayHabits.length){
+                        arr.map((check) => {
+                            if (check === true){
+                                c++;
+                                setPercentage(((c/arr.length) * 100).toFixed());
+                            }
+                        })
+                    }
+                    
                     return <ShowingHabits checked={habit.done}>
                         <span>
-                            <Data>
+                            <Data checked={habit.done} record={habit.currentSequence === habit.highestSequence}>
                                 <h1>{habit.name}</h1>
                                 <div>
-                                    <p>Sequência atual: {habit.currentSequence} dias</p>
-                                    <p>Seu recorde: {habit.highestSequence} dias</p>
+                                    <p>Sequência atual: <strong>{habit.currentSequence} dias</strong></p>
+                                    <p>Seu recorde: <strong>{habit.highestSequence} dias</strong></p>
                                 </div>
                             </Data>
 
@@ -104,6 +119,7 @@ const Day = styled.div`
     font-weight: 400;
     font-size: 23px;
 
+    h1,
     p {
         margin-top: 6px;
         margin-bottom: 32px;
@@ -112,13 +128,17 @@ const Day = styled.div`
         font-size: 18px;
         color: #BABABA;
     }
+
+    h1 {
+        color: #8FC549;
+    }
 `;
 
 const TodayHabits = styled.div`
     margin: 0 20px;
 
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
 
     p {
@@ -133,6 +153,7 @@ const TodayHabits = styled.div`
 
 const ShowingHabits = styled.div`
     padding: 13px;
+    margin-bottom: 20px;
     width: 100%;
     height: 124px;
     background: #FFFFFF;
@@ -148,7 +169,7 @@ const ShowingHabits = styled.div`
         border: none;
         cursor: pointer;
         border-radius: 5px;
-        background-color:   ${props => props.checked ? '#8FC549' : '#EBEBEB'} ;
+        background-color: ${props => props.checked ? '#8FC549' : '#EBEBEB'} ;
         margin: 4px;
         width: 119px;
         height: 119px;
@@ -195,5 +216,13 @@ const Data = styled.div`
         font-weight: 400;
         font-size: 16px;
         color: #666666;
+    }
+
+    strong {
+        color: ${props => props.checked ? '#8FC549' : '#666666'};
+    }
+
+    div p:nth-child(2) strong {
+        color: ${props => props.checked ? '#8FC549' : '#666666'};
     }
 `;

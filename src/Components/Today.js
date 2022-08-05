@@ -35,7 +35,6 @@ export default function Today () {
             if (response) {
                 if (todayHabits.length !== response.data.length){
                     setTodayHabits(response.data);
-                    console.log(response.data)
                 }
             }
         })
@@ -48,7 +47,6 @@ export default function Today () {
         .catch(function (error) {
             alert('Ocorreu um erro, tente novamente! '+error);
         }).then(function (response) {
-            console.log(response)
             gettingTodayHabits();
         })
     };
@@ -58,7 +56,6 @@ export default function Today () {
         .catch(function (error) {
             alert('Ocorreu um erro, tente novamente! '+error);
         }).then(function (response) {
-            console.log(response)
             gettingTodayHabits();
         })
     };
@@ -107,7 +104,9 @@ export default function Today () {
 
 const Content = styled.div`
     padding: 0 18px;
-    height: 100vh;
+    min-height: 100vh;
+    max-height: max-content;
+    margin-bottom: 80px;
     background-color: #E5E5E5;
 `;
 

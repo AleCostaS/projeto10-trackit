@@ -51,7 +51,7 @@ const ShowCalendar = styled.div`
 
     .react-calendar__tile {
         width: 20px;
-        height: 50px;
+        height: 55px;
     }
 
     .react-calendar__tile--now {

@@ -184,7 +184,7 @@ export default function Habits () {
                                 <div>S</div>
                             </Weekday>
                         </Weekdays>
-                        <ion-icon name="trash-outline" onClick={() => deletingHabits(habit.id)}></ion-icon>
+                        <ion-icon name="trash-outline" onClick={() => window.confirm('Deseja realmente deletar o Hábito?') ? deletingHabits(habit.id) : ''}></ion-icon>
                         </Habit>
                     })
                 }

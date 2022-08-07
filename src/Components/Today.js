@@ -70,7 +70,7 @@ export default function Today () {
             <TodayHabits>
                 {!todayHabits || todayHabits.length === 0 ? <p>Você ainda não possui nenhum hábito</p> : todayHabits.map((habit) => {
                     arr= [...arr, habit.done];
-                    
+
                     if (arr.length === todayHabits.length){
                         arr.map((check) => {
                             if (check === true){
@@ -226,6 +226,6 @@ const Data = styled.div`
     }
 
     div p:nth-child(2) strong {
-        color: ${props => props.checked ? '#8FC549' : '#666666'};
+        color: ${props => props.record ? '#8FC549' : '#666666'};
     }
 `;

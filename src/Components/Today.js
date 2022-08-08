@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import dayjs from "dayjs";
 import "dayjs/locale/pt";
-import { getTodayHabits } from './trackit';
+import { getTodayHabits } from '../Services/trackit';
 import { useState, useContext } from 'react';
-import { checkHabits } from './trackit';
-import { uncheckHabits } from './trackit';
+import { checkHabits } from '../Services/trackit';
+import { uncheckHabits } from '../Services/trackit';
 import { UserContext } from "./Providers/userProvider";
 
 export default function Today () {

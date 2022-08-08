@@ -55,7 +55,7 @@ const Upper = styled.div`
 
     position: fixed;
     top: 0;
-    z-index: 2;
+    z-index: 3;
 
     h1 {
         font-family: 'Playball', cursive;
@@ -85,7 +85,7 @@ const Lower = styled.div`
 
     position: fixed;
     bottom: 0;
-    z-index: 2;
+    z-index: 3;
 
     a {
         text-decoration: none;

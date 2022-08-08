@@ -42,4 +42,10 @@ function uncheckHabits (id, config) {
     return promise;
 }
 
-export { postRegister, postLogin, getHabits,  getTodayHabits, postHabits, deleteHabits, checkHabits, uncheckHabits };
+function getDailyHabits (config) {
+    const promise = axios.get(`${BASE_URL}/habits/history/daily`, config);
+    return promise;
+   
+}
+
+export { postRegister, postLogin, getHabits,  getTodayHabits, postHabits, deleteHabits, checkHabits, uncheckHabits, getDailyHabits };

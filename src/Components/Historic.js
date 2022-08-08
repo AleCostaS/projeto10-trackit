@@ -2,17 +2,66 @@ import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useState } from 'react';
+import { getDailyHabits } from '../Services/trackit';
+import dayjs from "dayjs";
+import LocalizedFormat from 'dayjs/plugin/localizedFormat'
+
+dayjs.extend(LocalizedFormat)
 
 export default function Historic () {
-    const [date, setDate] = useState();
-    const locale = 'fr-CA';
+    const [ habits, setHabits ] = useState([]);
+    const auth = JSON.parse(localStorage.getItem('auth'));
+    const config = { headers:{'Authorization': 'Bearer '+auth.token}};
+    let daysMarkeds = [];
+
+    getDailyHabits(config)
+    .catch(function (error) {
+        alert('Ocorreu um erro no registro, tente novamente! '+error);
+    }).then(function (response) {
+        if (response) {
+            if (habits.length !== response.data.length){
+                setHabits(response.data);
+            }
+        }
+    })
     
-    const markDay = (date) => {
-        new Intl.DateTimeFormat(
-        locale, 
-        {
-            day: "2-digit"
-        }).format(date)
+    if (habits.length !== 0) {
+        habits.map((day) => {
+            let c1 = 0;
+            let c2 = 0;
+            day.habits.map((habit) => {
+                c2++
+                if (habit.done){
+                    c1++
+                }
+                if (c1 === day.habits.length){
+                    daysMarkeds.push({day: dayjs(day.day.split('/')[1]+'/'+day.day.split('/')[0]+'/'+day.day.split('/')[2]), done: true})
+                } else if (c2 === day.habits.length){
+                    daysMarkeds.push({day: dayjs(day.day.split('/')[1]+'/'+day.day.split('/')[0]+'/'+day.day.split('/')[2]), done: false})
+                }
+            });
+        });
+    }
+    
+    const formatDate = (date) => {
+        let answer = '';
+
+        daysMarkeds.map((dayMarked) => {
+            if (dayjs().format('l') !== dayjs(dayMarked.day).format('l') && dayjs(dayMarked.day).format('l') === dayjs(date).format('l')) {
+                if (dayMarked.done){
+                    answer = 'done';
+                } else {
+                    answer = 'almost'
+                }
+            }
+        })
+
+        return answer;
+    }
+
+    const handleDate = (value) => {
+        console.log(value)
+        console.log(habits)
     };
 
     return (
@@ -24,7 +73,9 @@ export default function Historic () {
             <ShowCalendar>
                 <Calendar
                     calendarType='US'
-                    formatDay={markDay(date)}
+                    onClickDay={(value, event) => handleDate(value)}
+                    locale='pt-br'
+                    tileClassName={(date) => formatDate(dayjs(date.date))}
                 />
             </ShowCalendar>
         </Content>
@@ -51,7 +102,7 @@ const Title = styled.div`
 const ShowCalendar = styled.div`
     .react-calendar {
         width: 100%;
-        height: 402px;
+        height: 422px;
         border-radius: 15px;
         border: none;
     }
@@ -66,7 +117,7 @@ const ShowCalendar = styled.div`
 
     .react-calendar__tile {
         width: 20px;
-        height: 55px;
+        height: 45px;
     }
 
     .react-calendar__tile--now {
@@ -91,5 +142,23 @@ const ShowCalendar = styled.div`
         text-decoration: none;
         color: #666666;
         font-size: 14px;
+    }
+
+    .done {
+        background-image: linear-gradient(#8FC549, #8FC549);
+    }
+
+    .almost {
+        background-image: linear-gradient(red, red);
+    }
+
+    .almost,
+    .done {
+        -webkit-border-radius: 50px;
+        -moz-border-radius: 50px;
+        border-radius: 50px;
+        border: none;
+        padding: 0 20px;
+        color: #000;
     }
 `;

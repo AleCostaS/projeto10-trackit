@@ -32,8 +32,7 @@ export default function Today () {
         checkHabits(habitId, config)
         .catch(function (error) {
             alert('Ocorreu um erro, tente novamente! '+error);
-        }).then(function (response) {
-            console.log(response)
+        }).then(function () {
             gettingTodayHabits();
         })
     };
@@ -42,8 +41,7 @@ export default function Today () {
         uncheckHabits(habitId, config)
         .catch(function (error) {
             alert('Ocorreu um erro, tente novamente! '+error);
-        }).then(function (response) {
-            console.log(response)
+        }).then(function () {
             gettingTodayHabits();
         })
     };
@@ -74,7 +72,7 @@ export default function Today () {
                     
                     return <ShowingHabits checked={habit.done}>
                         <span>
-                            <Data checked={habit.done} record={habit.currentSequence === habit.highestSequence}>
+                            <Data checked={habit.done} record={habit.currentSequence === habit.highestSequence && habit.highestSequence !== 0}>
                                 <h1>{habit.name}</h1>
                                 <div>
                                     <p>Sequência atual: <strong>{habit.currentSequence} dias</strong></p>

@@ -162,7 +162,6 @@ const ShowingHabits = styled.div`
         border-radius: 5px;
         background-color: ${props => props.checked ? '#8FC549' : '#EBEBEB'} ;
         margin: 4px;
-        width: 119px;
         height: 119px;
         display: flex;
         align-items: center;

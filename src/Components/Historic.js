@@ -10,9 +10,11 @@ dayjs.extend(LocalizedFormat)
 
 export default function Historic () {
     const [ habits, setHabits ] = useState([]);
+    const [ screen, setScreen ] = useState();
     const auth = JSON.parse(localStorage.getItem('auth'));
     const config = { headers:{'Authorization': 'Bearer '+auth.token}};
     let daysMarkeds = [];
+    let arr = [];
 
     getDailyHabits(config)
     .catch(function (error) {
@@ -60,24 +62,48 @@ export default function Historic () {
     }
 
     const handleDate = (value) => {
-        console.log(value)
-        console.log(habits)
+        daysMarkeds.map((dayMarked) => {
+            if (dayjs(dayMarked.day).format('l') === dayjs(value).format('l')) {
+                setScreen(dayMarked.day);
+            }
+        })
     };
+
+    const equalDate = (date) => {
+        let day = dayjs(screen).format('L');
+        return date.day === (day.toString().split('/')[1]+'/'+day.toString().split('/')[0]+'/'+day.toString().split('/')[2]);
+    }
 
     return (
         <Content>
             <Title>
-                Histórico
+                {!screen ? 'Histórico' : (<>{dayjs(screen).locale("pt").format("dddd")+', '+dayjs(screen).locale("pt").format("D/MM")} <ion-icon name="close-outline" onClick={() => setScreen()}></ion-icon></>)}
             </Title>
-
-            <ShowCalendar>
+            {!screen ? (<ShowCalendar>
                 <Calendar
                     calendarType='US'
                     onClickDay={(value, event) => handleDate(value)}
                     locale='pt-br'
                     tileClassName={(date) => formatDate(dayjs(date.date))}
                 />
-            </ShowCalendar>
+            </ShowCalendar>) :  (<TodayHabits>
+                {habits.filter(equalDate)[0].habits.map((habit) => {
+                            arr= [...arr, habit.done];
+                            return <ShowingHabits checked={habit.done}>
+                                <span>
+                                    <Data checked={habit.done} record={habit.currentSequence === habit.highestSequence}>
+                                        <h1>{habit.name}</h1>
+                                    </Data>
+
+                                    <button>
+                                        <ion-icon name={habit.done ? "checkmark-outline" : 'close-outline'}></ion-icon>
+                                    </button>
+                                </span>
+                            </ShowingHabits>
+                        })
+                    }
+            </TodayHabits>)}
+            
         </Content>
     );
 };
@@ -97,6 +123,13 @@ const Title = styled.div`
     font-family: 'Lexend Deca';
     font-weight: 400;
     font-size: 23px;
+    display: flex;
+    justify-content: space-between;
+
+    ion-icon {
+        color: red;
+        font-size: 34px;
+    }
 `;
 
 const ShowCalendar = styled.div`
@@ -154,11 +187,101 @@ const ShowCalendar = styled.div`
 
     .almost,
     .done {
-        -webkit-border-radius: 50px;
-        -moz-border-radius: 50px;
-        border-radius: 50px;
+        border-radius: 50%;
         border: none;
         padding: 0 20px;
         color: #000;
+    }
+`;
+
+const TodayHabits = styled.div`
+    margin: 0 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p {
+        margin: 30vh 20px 0 20px;
+        text-align: center;
+        font-family: 'Lexend Deca';
+        font-weight: 400;
+        font-size: 18px;
+        color: #BABABA;
+    }
+`;
+
+const ShowingHabits = styled.div`
+    padding: 13px;
+    margin-bottom: 20px;
+    width: 100%;
+    height: 124px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    overflow: hidden;
+
+    span {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    span button {
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        background-color: ${props => props.checked ? '#8FC549' : 'red'} ;
+        margin: 4px;
+        height: 119px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    span button  ion-icon {
+        font-size: 64px;
+        --ionicon-stroke-width: 66px;
+        color: #FFFFFF;
+    }
+    
+    h1 {
+        margin: 0;
+        margin-top: 12px;
+        text-align: left;
+        font-family: 'Lexend Deca';
+        font-weight: 400;
+        font-size: 24px;
+        color: #666666;
+    }
+`;
+
+const Data = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    div {
+        background-color: #fff;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+    }
+    
+    p {
+        margin: 0;
+        padding: 0;
+        text-align: left;
+        font-family: 'Lexend Deca';
+        font-weight: 400;
+        font-size: 16px;
+        color: #666666;
+    }
+
+    strong {
+        color: ${props => props.checked ? '#8FC549' : '#666666'};
+    }
+
+    div p:nth-child(2) strong {
+        color: ${props => props.record ? '#8FC549' : '#666666'};
     }
 `;

@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { getHabits } from '../Services/trackit';
+import { getHabits } from './trackit';
 import { useState, useEffect } from 'react';
 import { ThreeDots } from  'react-loader-spinner';
-import { postHabits } from '../Services/trackit';
-import { deleteHabits } from '../Services/trackit';
+import { postHabits } from './trackit';
+import { deleteHabits } from './trackit';
 
 export default function Habits () {
     const [ habits, setHabits ] = useState([]);

@@ -4,8 +4,10 @@
   "private": true,
   "dependencies": {
     "@sideway/address": "^5.0.0",
+    "axios": "^0.27.2",
     "dayjs": "^1.11.4",
     "joi": "^17.6.0",
+    "nth-check": "^2.1.1",
     "react": "^17.0.2",
     "react-calendar": "^3.7.0",
     "react-circular-progressbar": "^2.1.0",

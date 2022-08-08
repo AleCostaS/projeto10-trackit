@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { useState } from 'react';
-import { getDailyHabits } from '../Services/trackit';
+import { getDailyHabits } from './trackit';
 import dayjs from "dayjs";
 import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 
